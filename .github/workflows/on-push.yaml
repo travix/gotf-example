@@ -1,0 +1,26 @@
+name: Demo
+on:
+  push:
+    branches:
+      - "**"
+  workflow_dispatch:
+
+jobs:
+  demo:
+    name: Demo
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Clone
+        uses: actions/checkout@v3
+      - id: setup-go
+        name: Setup GO
+        uses: actions/setup-go@v4
+        with:
+          go-version: ^1
+      - name: Setup buf
+        uses: bufbuild/buf-setup-action@v1.18.0
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Demo
+        run: ./run.sh
