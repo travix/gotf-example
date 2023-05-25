@@ -1,13 +1,14 @@
-package grpc_server
+package grpc
 
 import (
 	"fmt"
-	"github.com/rs/zerolog/log"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"net"
 	"os"
 	"time"
+
+	"github.com/rs/zerolog/log"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type gRPC struct {
@@ -37,14 +38,19 @@ func (s *gRPC) start() {
 }
 
 func (s *gRPC) setup() {
+	// same keys are used in terraform scripts
+	secrets := map[string]string{
+		os.Getenv("TF_VAR_key_id"): os.Getenv("TF_VAR_secret_key"),
+	}
 	opts := []grpc.ServerOption{
+		grpc.UnaryInterceptor(NewServerAuthInterceptor(secrets)),
 		grpc.Creds(insecure.NewCredentials()),
 	}
 	s.server = grpc.NewServer(opts...)
 }
 
 // NewServer initializes the gRPC service and the server object.
-func NewServer(service *Server, shutdown <-chan bool, done chan<- bool) {
+func NewServer(service *Servicer, shutdown <-chan bool, done chan<- bool) {
 	s := &gRPC{}
 	s.setup()
 	service.RegisterGRPC(s.server)

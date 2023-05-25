@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"github.com/travix/gotf-example/provider/providerpb"
+
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/travix/gotf-example/pb"
-	"github.com/travix/gotf-example/providerpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/travix/gotf-example/pb"
 )
 
 var _ providerpb.GroupResourceExec = &groupExec{}

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/travix/gotf-example/grpc-server"
+	grpc2 "github.com/travix/gotf-example/example-server/grpc"
 	"os"
 	"os/signal"
 	"syscall"
@@ -16,11 +16,12 @@ const shutdownDelay = 5 * time.Second
 
 func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr, FormatTimestamp: formatter})
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	// create service servers
 	shutdown := make(chan bool)
 	done := make(chan bool)
 	// start servers
-	grpc_server.NewServer(&grpc_server.Server{}, shutdown, done)
+	grpc2.NewServer(&grpc2.Servicer{}, shutdown, done)
 	handleShutdown(shutdown, done)
 	log.Info().Msg("shutdown complete")
 }
@@ -29,8 +30,7 @@ func formatter(i interface{}) string {
 	if i == nil {
 		return ""
 	}
-	switch tt := i.(type) {
-	case string:
+	if tt, ok := i.(string); ok {
 		ts, err := time.ParseInLocation(time.RFC3339, tt, time.Local)
 		if err != nil {
 			i = tt

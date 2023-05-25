@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"github.com/travix/gotf-example/provider/providerpb"
+
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+
 	"github.com/travix/gotf-example/pb"
-	"github.com/travix/gotf-example/providerpb"
 )
 
 var _ providerpb.GroupsDataSourceExec = &groupsExec{}

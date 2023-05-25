@@ -3,18 +3,16 @@ package main
 import (
 	"context"
 	"flag"
+	"github.com/travix/gotf-example/provider/providerpb"
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-
-	"github.com/travix/gotf-example/providerpb"
 )
 
 var (
-	version string = "dev"
+	version = "dev"
 )
 
-//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 func main() {
 	var debug bool
 	flag.BoolVar(&debug, "debug", false, "set to true to run the provider with support for debuggers like delve")

@@ -3,5 +3,5 @@ plugins:
   - plugin: gotf
     out: .
     opt:
-    - module=github.com/travix/gotf-example
-    - log_level=debug
+      - module=github.com/travix/gotf-example
+      - log_level=debug

@@ -3,17 +3,20 @@ package main
 import (
 	"context"
 	"fmt"
+	_grpc "github.com/travix/gotf-example/example-server/grpc"
+	providerpb2 "github.com/travix/gotf-example/provider/providerpb"
+
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/travix/gotf-example/pb"
-	"github.com/travix/gotf-example/providerpb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+
+	"github.com/travix/gotf-example/pb"
 )
 
-var _ providerpb.ExampleExec = &ProviderExec{}
+var _ providerpb2.ExampleExec = &ProviderExec{}
 
 type ProviderExec struct {
 }
@@ -21,7 +24,7 @@ type ProviderExec struct {
 func (p *ProviderExec) ConfigureGrpc(ctx context.Context, model *pb.ProviderModel) (conn grpc.ClientConnInterface, diagnostics diag.Diagnostics) {
 	// credentials and serverAddr can be fetched from req.Config by setting
 	opts := []grpc.DialOption{
-		// credentials or tokens can be fetched from model by setting fields on ProviderModel protobuf
+		grpc.WithUnaryInterceptor(_grpc.NewClientAuthInterceptor(model.KeyId, model.SecretKey)),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 	var err error
@@ -36,14 +39,14 @@ func (p *ProviderExec) ConfigureGrpc(ctx context.Context, model *pb.ProviderMode
 
 func (p *ProviderExec) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		providerpb.NewUsersDataSource(&usersExec{}),
-		providerpb.NewGroupsDataSource(&groupsExec{}),
+		providerpb2.NewUsersDataSource(&usersExec{}),
+		providerpb2.NewGroupsDataSource(&groupsExec{}),
 	}
 }
 
 func (p *ProviderExec) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		providerpb.NewUserResource(&userExec{}),
-		providerpb.NewGroupResource(&groupExec{}),
+		providerpb2.NewUserResource(&userExec{}),
+		providerpb2.NewGroupResource(&groupExec{}),
 	}
 }

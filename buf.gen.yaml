@@ -3,8 +3,8 @@ plugins:
   - plugin: go
     out: .
     opt:
-    - module=github.com/travix/gotf-example
+      - module=github.com/travix/gotf-example
   - plugin: go-grpc
     out: .
     opt:
-    - module=github.com/travix/gotf-example
+      - module=github.com/travix/gotf-example

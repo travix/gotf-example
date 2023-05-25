@@ -8,7 +8,9 @@ terraform {
 }
 
 provider "example" {
-  endpoint = "127.0.0.1:50051"
+  endpoint   = "127.0.0.1:50051"
+  key_id     = var.key_id
+  secret_key = var.secret_key
 }
 
 resource example_user "test-one" {
@@ -35,10 +37,18 @@ data example_groups "all" {
   ]
 }
 
+# Inputs
+variable key_id {
+  type = string
+}
+variable secret_key {
+  type = string
+}
+
+# Outputs
 output users {
   value = data.example_users.all.users
 }
-
 output groups {
   value = data.example_groups.all.groups
 }
