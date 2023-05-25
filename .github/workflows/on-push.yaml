@@ -19,7 +19,9 @@ jobs:
         with:
           go-version: ^1
       - name: Setup buf
-        uses: bufbuild/buf-setup-action@v1.18.0
+        uses: bufbuild/buf-setup-action@v1.19.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Demo
