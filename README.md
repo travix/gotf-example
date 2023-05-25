@@ -1,6 +1,6 @@
 # Example provider
 
-This is an example provider generated from protoc-gen-gotf.
+This is an example provider generated from [protoc-gen-gotf].
 
 ## Requirements
 
@@ -27,14 +27,10 @@ At the end of the run, 1 existing user, group and 1 new user, group will be crea
 
 [provider] package contains the provider implementation, it uses executors that communicate with [example-server]
 
+[protoc-gen-gotf]: https://github.com/travix/protoc-gen-gotf
 [buf.build]: https://buf.build/docs/installation/
-
 [gen.sh]: gen.sh
-
 [gotf.proto]: https://github.com/travix/protoc-gen-gotf/blob/main/gotf.proto
-
 [tfscript]: ./tfscript
-
 [provider]: ./provider
-
 [example-server]: ./example-server
