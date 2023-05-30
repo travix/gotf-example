@@ -16,7 +16,7 @@ const shutdownDelay = 5 * time.Second
 
 func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr, FormatTimestamp: formatter})
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	// create service servers
 	shutdown := make(chan bool)
 	done := make(chan bool)

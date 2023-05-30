@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"github.com/rs/zerolog"
 	"github.com/travix/gotf-example/provider/providerpb"
 	"log"
 
@@ -23,6 +24,7 @@ func main() {
 		Address: "travix.com/providers/example",
 		Debug:   debug,
 	}
+	zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	err := providerserver.Serve(context.Background(), providerpb.New(version, &ProviderExec{}), opts)
 	if err != nil {
 		log.Fatal(err.Error())

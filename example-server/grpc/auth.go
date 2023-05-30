@@ -54,6 +54,7 @@ func (c *clientAuth) Interceptor(ctx context.Context, method string, req, reply 
 	if err != nil {
 		return err
 	}
+	log.Debug().Str("plaintext", plaintext).Msg("client plaintext")
 	ctx = metadata.AppendToOutgoingContext(ctx, "x-hmac-signature", signature(c.hmacSecret, plaintext))
 	tflog.Info(ctx, "sending request")
 	return invoker(ctx, method, req, reply, cc, opts...)
@@ -88,6 +89,7 @@ func (s *serverAuth) Interceptor(ctx context.Context, req interface{}, info *grp
 		log.Debug().Err(err).Msg("failed to get plaintext")
 		return nil, err
 	}
+	log.Debug().Str("plaintext", plaintext).Msg("server plaintext")
 	// Compare HMAC signatures.
 	if !hmac.Equal([]byte(hmacSign[0]), signatureBytes(secretKey, plaintext)) {
 		log.Debug().Msg("invalid HMAC signature")

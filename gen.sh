@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 require() {
   if ! command -v "$1" &>/dev/null && [[ -n "$2" ]]; then
