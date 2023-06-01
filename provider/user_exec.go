@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"github.com/travix/gotf-example/provider/providerpb"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -10,6 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/travix/gotf-example/pb"
+	"github.com/travix/gotf-example/provider/providerpb"
 )
 
 var _ providerpb.UserResourceExec = &userExec{}

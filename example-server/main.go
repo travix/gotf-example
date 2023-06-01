@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	grpc2 "github.com/travix/gotf-example/example-server/grpc"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,6 +9,8 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+
+	"github.com/travix/gotf-example/example-server/grpc"
 )
 
 const shutdownDelay = 5 * time.Second
@@ -21,7 +22,7 @@ func main() {
 	shutdown := make(chan bool)
 	done := make(chan bool)
 	// start servers
-	grpc2.NewServer(&grpc2.Servicer{}, shutdown, done)
+	grpc.NewServer(&grpc.Servicer{}, shutdown, done)
 	handleShutdown(shutdown, done)
 	log.Info().Msg("shutdown complete")
 }

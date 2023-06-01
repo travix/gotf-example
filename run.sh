@@ -29,7 +29,7 @@ popd
 
 echo "[run.sh] Running terraform"
 pushd tfscript
-#export TF_LOG_PROVIDER=INFO
+export TF_LOG_PROVIDER=INFO
 rm -rf .terraform .terraform.lock.hcl plan.out terraform.tfstate terraform.tfstate.backup
 echo "[run.sh] terraform init"
 terraform init

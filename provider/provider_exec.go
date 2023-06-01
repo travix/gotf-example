@@ -3,8 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	_grpc "github.com/travix/gotf-example/example-server/grpc"
-	providerpb2 "github.com/travix/gotf-example/provider/providerpb"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -13,10 +11,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
+	_grpc "github.com/travix/gotf-example/example-server/grpc"
 	"github.com/travix/gotf-example/pb"
+	"github.com/travix/gotf-example/provider/providerpb"
 )
 
-var _ providerpb2.ExampleExec = &ProviderExec{}
+var _ providerpb.ExampleExec = &ProviderExec{}
 
 type ProviderExec struct {
 }
@@ -28,6 +28,9 @@ func (p *ProviderExec) ConfigureGrpc(ctx context.Context, model *pb.ProviderMode
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 	var err error
+	if model.Endpoint == "" {
+		model.Endpoint = "127.0.0.1:50051"
+	}
 	tflog.Info(ctx, fmt.Sprintf("dialing grpc connection with example grcp '%s'", model.Endpoint))
 	conn, err = grpc.Dial(model.Endpoint, opts...)
 	if err != nil {
@@ -39,14 +42,14 @@ func (p *ProviderExec) ConfigureGrpc(ctx context.Context, model *pb.ProviderMode
 
 func (p *ProviderExec) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		providerpb2.NewUsersDataSource(&usersExec{}),
-		providerpb2.NewGroupsDataSource(&groupsExec{}),
+		providerpb.NewUsersDataSource(&usersExec{}),
+		providerpb.NewGroupsDataSource(&groupsExec{}),
 	}
 }
 
 func (p *ProviderExec) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		providerpb2.NewUserResource(&userExec{}),
-		providerpb2.NewGroupResource(&groupExec{}),
+		providerpb.NewUserResource(&userExec{}),
+		providerpb.NewGroupResource(&groupExec{}),
 	}
 }

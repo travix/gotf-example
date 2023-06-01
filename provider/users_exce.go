@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"github.com/travix/gotf-example/provider/providerpb"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 
 	pb "github.com/travix/gotf-example/pb"
+	"github.com/travix/gotf-example/provider/providerpb"
 )
 
 var _ providerpb.UsersDataSourceExec = &usersExec{}

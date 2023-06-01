@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/rs/zerolog"
-	"github.com/travix/gotf-example/provider/providerpb"
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
+	"github.com/rs/zerolog"
+
+	"github.com/travix/gotf-example/provider/providerpb"
 )
 
 var (
