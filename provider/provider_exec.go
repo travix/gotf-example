@@ -8,10 +8,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	hmac "github.com/yogeshlonkar/go-grpc-hmac"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	_grpc "github.com/travix/gotf-example/example-server/grpc"
 	"github.com/travix/gotf-example/pb"
 	"github.com/travix/gotf-example/provider/providerpb"
 )
@@ -22,9 +22,9 @@ type ProviderExec struct {
 }
 
 func (p *ProviderExec) ConfigureGrpc(ctx context.Context, model *pb.ProviderModel) (conn grpc.ClientConnInterface, diagnostics diag.Diagnostics) {
-	// credentials and serverAddr can be fetched from req.Config by setting
+	interceptor := hmac.NewClientInterceptor(model.KeyId, model.SecretKey)
 	opts := []grpc.DialOption{
-		grpc.WithUnaryInterceptor(_grpc.NewClientAuthInterceptor(model.KeyId, model.SecretKey)),
+		interceptor.WithUnaryInterceptor(),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 	var err error

@@ -1,12 +1,16 @@
 package grpc
 
 import (
+	"errors"
 	"fmt"
 	"net"
 	"os"
 	"time"
 
+	hmac "github.com/yogeshlonkar/go-grpc-hmac"
+
 	"github.com/rs/zerolog/log"
+	hmac "github.com/yogeshlonkar/go-grpc-hmac"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -37,13 +41,21 @@ func (s *gRPC) start() {
 	}
 }
 
-func (s *gRPC) setup() {
+func getSecrets(keyId string) (string, error) {
 	// same keys are used in terraform scripts
-	secrets := map[string]string{
-		os.Getenv("TF_VAR_key_id"): os.Getenv("TF_VAR_secret_key"),
+	if keyId == os.Getenv("TF_VAR_key_id") {
+		return os.Getenv("TF_VAR_secret_key"), nil
 	}
+	if os.Getenv("TF_VAR_key_id") == "" {
+		return "", errors.New("TF_VAR_key_id is not set")
+	}
+	return "", nil
+}
+
+func (s *gRPC) setup() {
+	interceptor := hmac.NewServerInterceptor(getSecrets)
 	opts := []grpc.ServerOption{
-		grpc.UnaryInterceptor(NewServerAuthInterceptor(secrets)),
+		interceptor.UnaryInterceptor(),
 		grpc.Creds(insecure.NewCredentials()),
 	}
 	s.server = grpc.NewServer(opts...)
