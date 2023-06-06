@@ -10,6 +10,7 @@ message ProviderModel {
   option (gotf.provider) = {
     name: "example",
     provider_package: "github.com/travix/gotf-example/provider/providerpb",
+    exec_package: "github.com/travix/gotf-example/provider;main",
   };
   string endpoint = 1 [(gotf.attribute) = {must_be: Optional}];
   string key_id = 2 [(gotf.attribute) = {must_be: Required}];

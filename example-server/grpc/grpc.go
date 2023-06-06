@@ -7,8 +7,6 @@ import (
 	"os"
 	"time"
 
-	hmac "github.com/yogeshlonkar/go-grpc-hmac"
-
 	"github.com/rs/zerolog/log"
 	hmac "github.com/yogeshlonkar/go-grpc-hmac"
 	"google.golang.org/grpc"
